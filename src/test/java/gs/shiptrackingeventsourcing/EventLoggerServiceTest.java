@@ -1,0 +1,25 @@
+package gs.shiptrackingeventsourcing;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+class EventLoggerServiceTest {
+
+    private EventLoggerService eventLoggerService;
+
+    @BeforeEach
+    public void setup() {
+        eventLoggerService = new EventLoggerService();
+    }
+
+    @Test
+    public void recordEvent_addsTheEventToTheLog() {
+        Event event = ShipAddEvent.builder().ship(Ship.builder().id("FB").name("Foobar").build()).build();
+        eventLoggerService.recordEvent(event);
+
+        Assertions.assertTrue(eventLoggerService.getEventLog().containsAll(List.of(event)));
+    }
+}

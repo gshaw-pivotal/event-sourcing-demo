@@ -10,14 +10,25 @@ import java.util.Map;
 @Service
 public class ShipManagementService {
 
+    private EventLoggerService eventLoggerService;
+
     private Map<String, Ship> shipRegistry = new HashMap();
+
+    public ShipManagementService(EventLoggerService eventLoggerService) {
+        this.eventLoggerService = eventLoggerService;
+    }
 
     public void addShip(Ship ship) {
         shipRegistry.put(ship.id, ship);
+        eventLoggerService.recordEvent(ShipAddEvent.builder().ship(ship).build());
     }
 
     public void removeShip(String id) {
-        shipRegistry.remove(id);
+        Ship shipToRemove = shipRegistry.get(id);
+        if (shipToRemove != null) {
+            shipRegistry.remove(id);
+            eventLoggerService.recordEvent(ShipRemoveEvent.builder().ship(shipToRemove).build());
+        }
     }
 
     public List<Ship> getShipList() {
