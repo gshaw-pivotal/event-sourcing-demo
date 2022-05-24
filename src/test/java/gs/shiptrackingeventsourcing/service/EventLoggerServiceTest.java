@@ -3,7 +3,6 @@ package gs.shiptrackingeventsourcing.service;
 import gs.shiptrackingeventsourcing.model.Event;
 import gs.shiptrackingeventsourcing.model.Ship;
 import gs.shiptrackingeventsourcing.model.ShipAddEvent;
-import gs.shiptrackingeventsourcing.service.EventLoggerService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
