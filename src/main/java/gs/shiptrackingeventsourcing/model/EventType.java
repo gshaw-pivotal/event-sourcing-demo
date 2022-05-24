@@ -1,4 +1,4 @@
-package gs.shiptrackingeventsourcing;
+package gs.shiptrackingeventsourcing.model;
 
 public enum EventType {
     AddShip,

@@ -1,4 +1,4 @@
-package gs.shiptrackingeventsourcing;
+package gs.shiptrackingeventsourcing.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class Ship {
     @NonNull
-    String id;
+    public String id;
 
     @NonNull
     String name;

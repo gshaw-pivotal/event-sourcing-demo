@@ -1,5 +1,8 @@
-package gs.shiptrackingeventsourcing;
+package gs.shiptrackingeventsourcing.api;
 
+import gs.shiptrackingeventsourcing.api.ShipController;
+import gs.shiptrackingeventsourcing.model.Ship;
+import gs.shiptrackingeventsourcing.service.ShipManagementService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

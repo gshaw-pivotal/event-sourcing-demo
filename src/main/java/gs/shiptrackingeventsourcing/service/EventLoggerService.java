@@ -1,5 +1,6 @@
-package gs.shiptrackingeventsourcing;
+package gs.shiptrackingeventsourcing.service;
 
+import gs.shiptrackingeventsourcing.model.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

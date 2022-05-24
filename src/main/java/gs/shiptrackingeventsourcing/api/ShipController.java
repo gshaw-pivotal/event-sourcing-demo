@@ -1,5 +1,7 @@
-package gs.shiptrackingeventsourcing;
+package gs.shiptrackingeventsourcing.api;
 
+import gs.shiptrackingeventsourcing.model.Ship;
+import gs.shiptrackingeventsourcing.service.ShipManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
