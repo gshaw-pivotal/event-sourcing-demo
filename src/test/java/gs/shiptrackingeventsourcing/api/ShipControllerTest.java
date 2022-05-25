@@ -39,7 +39,7 @@ public class ShipControllerTest {
 
     @Test
     public void addShip_withNoRequestBody_returnsBadRequest() throws Exception {
-        mockMvc.perform(post("/api/add")
+        mockMvc.perform(post("/api/ship/add")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -48,7 +48,7 @@ public class ShipControllerTest {
 
     @Test
     public void addShip_withEmptyRequestBody_returnsBadRequest() throws Exception {
-        mockMvc.perform(post("/api/add")
+        mockMvc.perform(post("/api/ship/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(""))
                 .andExpect(status().isBadRequest());
@@ -58,7 +58,7 @@ public class ShipControllerTest {
 
     @Test
     public void addShip_withInvalidRequestBody_returnsBadRequest() throws Exception {
-        mockMvc.perform(post("/api/add")
+        mockMvc.perform(post("/api/ship/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"foo\": \"bar\"}"))
                 .andExpect(status().isBadRequest());
@@ -68,7 +68,7 @@ public class ShipControllerTest {
 
     @Test
     public void addShip_withValidRequestBody_returnsSuccess() throws Exception {
-        mockMvc.perform(post("/api/add")
+        mockMvc.perform(post("/api/ship/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": \"TLB01\", \"name\": \"this little boat\"}"))
                 .andExpect(status().isCreated());
@@ -78,20 +78,20 @@ public class ShipControllerTest {
 
     @Test
     public void removeShip_withNoId_returnsNotFound() throws Exception {
-        mockMvc.perform(delete("/api/remove")
+        mockMvc.perform(delete("/api/ship/remove")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().is4xxClientError());
 
-        mockMvc.perform(delete("/api/remove/")
+        mockMvc.perform(delete("/api/ship/remove/")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().is4xxClientError());
 
         verifyNoInteractions(shipManagementService);
     }
 
     @Test
     public void removeShip_withId_returnsSuccess() throws Exception {
-        mockMvc.perform(delete("/api/remove/1")
+        mockMvc.perform(delete("/api/ship/remove/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -102,7 +102,7 @@ public class ShipControllerTest {
     public void listShips_returnsSuccess() throws Exception {
         when(shipManagementService.getShipList()).thenReturn(List.of(Ship.builder().id("Foo").name("Foobar").build()));
 
-        MvcResult result = mockMvc.perform(get("/api/list")
+        MvcResult result = mockMvc.perform(get("/api/ship/list")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

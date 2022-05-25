@@ -21,7 +21,7 @@ class ShipTrackingEventSourcingApplicationTests {
 
 	@Test
 	void contextLoads() {
-		ResponseEntity response = restTemplate.getForEntity("http://localhost:" + serverPort + "/api/list", List.class);
+		ResponseEntity response = restTemplate.getForEntity("http://localhost:" + serverPort + "/api/ship/list", List.class);
 
 		Assertions.assertTrue(response.getStatusCode().is2xxSuccessful());
 	}

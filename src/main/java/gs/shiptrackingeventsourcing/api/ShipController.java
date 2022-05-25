@@ -17,7 +17,7 @@ public class ShipController {
     private ShipManagementService shipManagementService;
 
     @PostMapping(
-            value = "/api/add",
+            value = "/api/ship/add",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity addShip(@RequestBody Ship ship) {
@@ -25,7 +25,7 @@ public class ShipController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping(value = "/api/list")
+    @GetMapping(value = "/api/ship/list")
     public ResponseEntity<List<Ship>> listShips() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -43,7 +43,7 @@ public class ShipController {
                 );
     }
 
-    @DeleteMapping(value = "/api/remove/{id}")
+    @DeleteMapping(value = "/api/ship/remove/{id}")
     public ResponseEntity removeShip(@PathVariable String id) {
         shipManagementService.removeShip(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
