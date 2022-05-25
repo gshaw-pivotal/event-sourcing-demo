@@ -34,6 +34,15 @@ public class ShipController {
                 );
     }
 
+    @GetMapping(value = "/api/ship/{id}")
+    public ResponseEntity<Ship> getShip(@PathVariable String id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        shipManagementService.getShip(id)
+                );
+    }
+
     @DeleteMapping(value = "/api/remove/{id}")
     public ResponseEntity removeShip(@PathVariable String id) {
         shipManagementService.removeShip(id);

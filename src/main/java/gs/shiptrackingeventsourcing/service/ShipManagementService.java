@@ -34,6 +34,10 @@ public class ShipManagementService {
         }
     }
 
+    public Ship getShip(String id) {
+        return shipRegistry.get(id);
+    }
+
     public List<Ship> getShipList() {
         return new ArrayList(shipRegistry.values());
     }

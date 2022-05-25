@@ -111,4 +111,18 @@ public class ShipControllerTest {
 
         verify(shipManagementService).getShipList();
     }
+
+    @Test
+    public void getShip_returnsSuccess() throws Exception {
+        when(shipManagementService.getShip("Foo")).thenReturn(Ship.builder().id("Foo").name("Foobar").build());
+
+        MvcResult result = mockMvc.perform(get("/api/ship/Foo")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Assertions.assertEquals("{\"id\":\"Foo\",\"name\":\"Foobar\"}", result.getResponse().getContentAsString());
+
+        verify(shipManagementService).getShip("Foo");
+    }
 }

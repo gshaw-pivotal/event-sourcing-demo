@@ -144,4 +144,20 @@ class ShipManagementServiceTest {
                 Ship.builder().id("FB").name("Foobar").build()
         )));
     }
+
+    @Test
+    public void getShip_returnsTheShipIfItExistsInTheRegistry() {
+        shipManagementService.addShip(Ship.builder().id("FB").name("Foobar").build());
+        shipManagementService.addShip(Ship.builder().id("BF").name("Barfoo").build());
+
+        Assertions.assertEquals(Ship.builder().id("FB").name("Foobar").build(), shipManagementService.getShip("FB"));
+    }
+
+    @Test
+    public void getShip_returnsNullIfItDoesNotExistInTheRegistry() {
+        shipManagementService.addShip(Ship.builder().id("FB").name("Foobar").build());
+        shipManagementService.addShip(Ship.builder().id("BF").name("Barfoo").build());
+
+        Assertions.assertNull(shipManagementService.getShip("AA"));
+    }
 }
