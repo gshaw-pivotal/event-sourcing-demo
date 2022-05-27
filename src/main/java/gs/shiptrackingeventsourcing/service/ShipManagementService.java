@@ -1,8 +1,6 @@
 package gs.shiptrackingeventsourcing.service;
 
-import gs.shiptrackingeventsourcing.model.Ship;
-import gs.shiptrackingeventsourcing.model.ShipAddEvent;
-import gs.shiptrackingeventsourcing.model.ShipRemoveEvent;
+import gs.shiptrackingeventsourcing.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +14,8 @@ public class ShipManagementService {
     private EventLoggerService eventLoggerService;
 
     private Map<String, Ship> shipRegistry = new HashMap();
+
+    private Map<String, Status> shipStatusRegistry = new HashMap();
 
     public ShipManagementService(EventLoggerService eventLoggerService) {
         this.eventLoggerService = eventLoggerService;
@@ -34,11 +34,24 @@ public class ShipManagementService {
         }
     }
 
+    public void updateShipStatus(Status shipStatus) {
+        Ship shipToStatusUpdate = shipRegistry.get(shipStatus.shipId);
+
+        if (shipToStatusUpdate != null) {
+            shipStatusRegistry.put(shipStatus.shipId, shipStatus);
+            eventLoggerService.recordEvent(ShipStatusEvent.builder().ship(shipToStatusUpdate).shipStatus(shipStatus.shipStatus).build());
+        }
+    }
+
     public Ship getShip(String id) {
         return shipRegistry.get(id);
     }
 
+    public Status getShipStatus(String id) { return shipStatusRegistry.get(id); }
+
     public List<Ship> getShipList() {
         return new ArrayList(shipRegistry.values());
     }
+
+    public List<Status> getShipStatusList() { return new ArrayList(shipStatusRegistry.values()); }
 }

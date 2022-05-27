@@ -1,9 +1,6 @@
 package gs.shiptrackingeventsourcing.service;
 
-import gs.shiptrackingeventsourcing.model.Event;
-import gs.shiptrackingeventsourcing.model.Ship;
-import gs.shiptrackingeventsourcing.model.ShipAddEvent;
-import gs.shiptrackingeventsourcing.model.ShipRemoveEvent;
+import gs.shiptrackingeventsourcing.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -159,5 +156,54 @@ class ShipManagementServiceTest {
         shipManagementService.addShip(Ship.builder().id("BF").name("Barfoo").build());
 
         Assertions.assertNull(shipManagementService.getShip("AA"));
+    }
+
+    @Test
+    public void updateShipStatus_givenAShipThatExistsItUpdatesTheStatus() {
+        doNothing().when(eventLoggerService).recordEvent(any());
+
+        shipManagementService.addShip(Ship.builder().id("FB").name("Foobar").build());
+
+        shipManagementService.updateShipStatus(Status.builder().shipId("FB").shipStatus(StatusType.UNDERWAY).build());
+
+        Assertions.assertTrue(shipManagementService.getShipStatusList().containsAll(List.of(
+                Status.builder().shipId("FB").shipStatus(StatusType.UNDERWAY).build()
+        )));
+
+        verify(eventLoggerService, times(1)).recordEvent(ShipAddEvent.builder().ship(Ship.builder().id("FB").name("Foobar").build()).build());
+        verify(eventLoggerService, times(1)).recordEvent(ShipStatusEvent.builder().ship(Ship.builder().id("FB").name("Foobar").build()).shipStatus(StatusType.UNDERWAY).build());
+    }
+
+    @Test
+    public void updateShipStatus_givenAShipThatDoesNotExistsItDoesNotUpdate() {
+        shipManagementService.addShip(Ship.builder().id("FB").name("Foobar").build());
+
+        shipManagementService.updateShipStatus(Status.builder().shipId("AA").shipStatus(StatusType.UNDERWAY).build());
+
+        Assertions.assertTrue(shipManagementService.getShipStatusList().size() == 0);
+
+        verify(eventLoggerService, times(1)).recordEvent(ShipAddEvent.builder().ship(Ship.builder().id("FB").name("Foobar").build()).build());
+        verifyNoMoreInteractions(eventLoggerService);
+    }
+
+    @Test
+    public void getShipStatus_givenAShipThatExistsGetsTheShipStatus() {
+        doNothing().when(eventLoggerService).recordEvent(any());
+
+        shipManagementService.addShip(Ship.builder().id("FB").name("Foobar").build());
+        shipManagementService.addShip(Ship.builder().id("BF").name("Barfoo").build());
+
+        shipManagementService.updateShipStatus(Status.builder().shipId("FB").shipStatus(StatusType.UNDERWAY).build());
+        shipManagementService.updateShipStatus(Status.builder().shipId("BF").shipStatus(StatusType.IDLE).build());
+
+        Assertions.assertEquals(
+                Status.builder().shipId("FB").shipStatus(StatusType.UNDERWAY).build(),
+                shipManagementService.getShipStatus("FB")
+        );
+    }
+
+    @Test
+    public void getShipStatus_givenAShipThatDoesNotExistsGetsNull() {
+        Assertions.assertNull(shipManagementService.getShipStatus("AA"));
     }
 }

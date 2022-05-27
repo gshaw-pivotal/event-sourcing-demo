@@ -1,6 +1,7 @@
 package gs.shiptrackingeventsourcing.api;
 
 import gs.shiptrackingeventsourcing.model.Ship;
+import gs.shiptrackingeventsourcing.model.Status;
 import gs.shiptrackingeventsourcing.service.ShipManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,32 @@ public class ShipController {
     public ResponseEntity removeShip(@PathVariable String id) {
         shipManagementService.removeShip(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(
+            value = "/api/ship/status",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity updateStatus(@RequestBody Status shipStatus) {
+        shipManagementService.updateShipStatus(shipStatus);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping(value = "/api/ship/{id}/status")
+    public ResponseEntity<Status> getShipStatus(@PathVariable String id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        shipManagementService.getShipStatus(id)
+                );
+    }
+
+    @GetMapping(value = "/api/ship/status/list")
+    public ResponseEntity<List<Status>> getShipStatusList() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        shipManagementService.getShipStatusList()
+                );
     }
 }
